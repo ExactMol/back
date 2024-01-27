@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Style Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            width: 600px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select, textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form id="predictForm">
+            <div class="form-group">
+                <label for="model">Модель</label>
+                <select id="model" name="model">
+                    <option value="Cannabinoid Receptor 2">a</option>
+                    <option value="Beta-2 adrenergic Receptor">b</option>
+                    <option value="Dopamine D1">c</option>
+                    <option value="Chemokine Receptor 5">d</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="query">Запрос</label>
+                <textarea id="query" name="query" rows="4"></textarea>
+            </div>
+            <button type="button" onclick="sendData()">Отправить</button>
+            <div class="form-group">
+                <label for="result">Результат</label>
+                <input type="text" id="result" name="result">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function sendData() {
+            var model = document.getElementById('model').value;
+            var query = document.getElementById('query').value;
+
+            fetch('/api/v1/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ model: model, query: query })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').value = data.key; // Предполагая, что в ответе есть поле 'key'
+            })
+            .catch(error => console.error('Ошибка:', error));
+        }
+    </script>
+</body>
+</html>
